@@ -44,10 +44,36 @@ ORDER BY fornecedores_quantidade DESC
 LIMIT 1;
 
 -- Pergunta 3: Quantos fornecedores foram registrados no mês de Setembro de 2023?
+SELECT
+    COUNT(*) AS quantidade_fornecedores
+FROM cap05.fornecedores
+WHERE EXTRACT(MONTH FROM data_registro) = 9
+  AND EXTRACT(YEAR FROM data_registro) = 2023;
+
+
 
 
 -- Pergunta 4: Qual é a média de registros de fornecedores por mês?
+SELECT
+    DATE_TRUNC('month', data_registro) AS mes,
+    COUNT(*) AS quantidade_fornecedores
+FROM cap05.fornecedores
+GROUP BY DATE_TRUNC('month', data_registro)
+ORDER BY mes;
 
+SELECT
+    ROUND(AVG(quantidade_fornecedores),2) AS media_fornecedores_por_mes
+FROM (
+    SELECT
+        DATE_TRUNC('month', data_registro) AS mes,
+        COUNT(*) AS quantidade_fornecedores
+    FROM cap05.fornecedores
+    GROUP BY DATE_TRUNC('month', data_registro)
+) AS registros_mensais;
 
 -- Pergunta 5: Qual é o fornecedor mais recente registrado?
-
+SELECT
+    *
+FROM cap05.fornecedores
+ORDER BY data_registro DESC
+LIMIT 1;
